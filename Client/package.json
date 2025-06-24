@@ -5,27 +5,28 @@
   "main": "src/App.js",
   "proxy": "http://localhost:5002",
   "scripts": {
-  "start": "react-scripts start",
-  "build": "react-scripts build", 
-  "test": "react-scripts test", 
-  "eject": "react-scripts eject" 
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
-    "dependencies": {
+  "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "mongoose": "^6.8.4"
+    "mongoose": "^6.8.4",
+    "react-scripts": "^0.0.0"
   },
-    "author": "Jerome Li",
-    "license": "ISC",
-    "keywords": [
-        "server",
-        "express",
-        "nodemon",
-        "client-server"
-    ],
-    "repository": {
-        "type": "git",
-        "url": "github.com/JeromeL1/JeromeL1.github.io.git"
-    }
+  "author": "Jerome Li",
+  "license": "ISC",
+  "keywords": [
+    "server",
+    "express",
+    "nodemon",
+    "client-server"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "github.com/JeromeL1/JeromeL1.github.io.git"
+  }
 }
