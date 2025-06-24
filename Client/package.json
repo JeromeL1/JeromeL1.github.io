@@ -3,9 +3,12 @@
   "version": "1.0.0",
   "description": "Server-side application for the Client/Server project",
   "main": "src/App.js",
-  "scripts": {              
-    "start": "node src/App.js",
-    "dev": "nodemon src/App.js"
+  "proxy": "http://localhost:5002",
+  "scripts": {
+  "start": "react-scripts start",
+  "build": "react-scripts build", 
+  "test": "react-scripts test", 
+  "eject": "react-scripts eject" 
   },
     "dependencies": {
     "cors": "^2.8.5",

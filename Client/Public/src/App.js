@@ -15,31 +15,31 @@ function App()
 
         // useEffect to simulate loading and fetching data from the server
         // This will run once when the component mounts, thanks to the empty dependency array
-        useEffect(() => 
-            {
-            const fetchData = async ()  => 
-                {
-                try
-                    {
-                    // Fetch data from the server
-                    const response = await fetch('/api');
-                    if (!response.ok) 
-                        {
-                        throw new Error('Network response was not ok');
-                        }
+        // useEffect(() => 
+        //     {
+        //     const fetchData = async ()  => 
+        //         {
+        //         try
+        //             {
+        //             // Fetch data from the server
+        //             const response = await fetch('/api');
+        //             if (!response.ok) 
+        //                 {
+        //                 throw new Error('Network response was not ok');
+        //                 }
 
-                    const data = await response.json();
-                    setMessage(data.message);
-                    } catch (error) { 
-                        setError('Failed to fetch data from the server');
-                        console.error('Error fetching data:', error);
-                    } finally {
-                        setLoading(false); // Set loading to false after fetching data (success or failure)
-                    }
-                fetchData();
-                };
-        fetchData();
-            }, []);
+        //             const data = await response.json();
+        //             setMessage(data.message);
+        //             } catch (error) { 
+        //                 setError('Failed to fetch data from the server');
+        //                 console.error('Error fetching data:', error);
+        //             } finally {
+        //                 setLoading(false); // Set loading to false after fetching data (success or failure)
+        //             }
+        //         fetchData();
+        //         };
+        // fetchData();
+        //     }, []);
 
         return (
             <div className='App'>
@@ -50,7 +50,7 @@ function App()
                     {message && <div className='welcome-message'>Server says: "{message}"</div>}
                     </div>
             </div>
-        )
+        );
     }
 
 export default App; 
