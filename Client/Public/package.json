@@ -1,0 +1,28 @@
+{
+  "name": "public",
+  "version": "1.0.0",
+  "description": "Server-side application for the Client/Server project",
+  "main": "src/App.js",
+  "scripts": {              
+    "start": "node src/App.js",
+    "dev": "nodemon src/App.js"
+  },
+    "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^6.8.4"
+  },
+    "author": "Jerome Li",
+    "license": "ISC",
+    "keywords": [
+        "server",
+        "express",
+        "nodemon",
+        "client-server"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "github.com/JeromeL1/JeromeL1.github.io.git"
+    }
+}
