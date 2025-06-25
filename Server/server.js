@@ -13,6 +13,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
+const errorHandler = require('./middleware/errorHandler');
 
 // ===================================================
 // 2. INITIALIZE & CONFIGURE
@@ -48,12 +49,20 @@ app.use(cors());
 // This replaces the old bodyParser.json()
 app.use(express.json());
 
+// Enable Express to parse URL-encoded data in the request body
+app.use(express.urlencoded({ extended: true }));
+
 // Example of serving static files (if you had a 'public' folder for images, etc.)
 // app.use(express.static('public')); // This is optional for now
 
 // ===================================================
 // 5. DEFINE ROUTES
 // =_=================================================
+// A simple test route to check if the server is running
+app.get('/health', (req, res) => {
+    res.json({ status: 'ok', message: 'Server is healthy' });
+});
+
 // A simple test route to check if the server is running
 app.get('/api', (req, res) => {
     // Send a JSON response
@@ -63,7 +72,17 @@ app.get('/api', (req, res) => {
 // ===================================================
 // 6. START THE SERVER
 // ===================================================
+// Error Handling
+app.use((req, res, next) => {
+    const error = new Error('Not Found');
+    error.status = 404;
+    next(error);
+});
+
+app.use(errorHandler);
+
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
+    console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
 });
 
