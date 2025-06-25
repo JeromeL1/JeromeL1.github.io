@@ -1,26 +1,43 @@
 {
   "name": "jeromel1.github.io",
   "version": "1.0.0",
+  "description": "MERN Stack Portfolio Application",
   "main": "index.js",
   "scripts": {
-    "server": "npm run dev --prefix Server",
-    "client": "npm start --prefix Client",
+    "start": "node Server/server.js",
+    "server": "cd Server && npm run dev",
+    "client": "cd Client && npm start",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "install-all": "npm install && cd Server && npm install && cd ../Client && npm install"
+    "install-server": "cd Server && npm install",
+    "install-client": "cd Client && npm install",
+    "install-all": "npm install && npm run install-server && npm run install-client",
+    "build": "cd Client && npm run build",
+    "test": "cd Client && npm test",
+    "clean": "rm -rf node_modules && cd Client && rm -rf node_modules && cd ../Server && rm -rf node_modules"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/JeromeL1/JeromeL1.github.io.git"
   },
-  "keywords": [],
+  "keywords": [
+    "mern",
+    "react",
+    "node",
+    "mongodb",
+    "express",
+    "portfolio"
+  ],
   "author": "Jerome Li",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/JeromeL1/JeromeL1.github.io/issues"
   },
   "homepage": "https://github.com/JeromeL1/JeromeL1.github.io#readme",
-  "description": "MERN Stack Application",
   "dependencies": {
-    "concurrently": "^9.2.0"
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
   }
 }
