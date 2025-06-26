@@ -1,61 +1,42 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import Navigation from './components/Navigation';
+import Login from './components/Login';
+import Register from './components/Register';
+import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 
+// Placeholder Home component - replace with your actual home component
+const Home = () => (
+  <div style={{ padding: '2rem' }}>
+    <h1>Welcome to the App</h1>
+    <p>This is a protected page. You can only see this if you're logged in.</p>
+  </div>
+);
+
 function App() {
-    // State management
-    const [message, setMessage] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                // Set loading state
-                setLoading(true);
-                setError(null);
-
-                // Fetch data from the server
-                const response = await fetch('http://localhost:5002/api');
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const data = await response.json();
-                setMessage(data.message);
-            } catch (error) {
-                setError(error.message || 'Failed to fetch data from the server');
-                console.error('Error fetching data:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchData();
-    }, []);
-
-    return (
+  return (
+    <AuthProvider>
+      <Router>
         <div className="App">
-            <div className="App-header">
-                <h1>Learning MERN Application</h1>
-                {loading && (
-                    <div className="loading">
-                        Loading data from server...
-                    </div>
-                )}
-                {error && (
-                    <div className="error-message" style={{ color: 'red' }}>
-                        Error: {error}
-                    </div>
-                )}
-                {message && (
-                    <div className="welcome-message">
-                        Server says: "{message}"
-                    </div>
-                )}
-            </div>
+          <Navigation />
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <Home />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
         </div>
-    );
+      </Router>
+    </AuthProvider>
+  );
 }
 
 export default App; 

@@ -1,78 +1,98 @@
-// == Server Setup with Express and MongoDB ==
-// This code sets up a basic Express server with MongoDB connection and middleware configuration.
-// Importing dependencies
-// This is a basic Express server setup with MongoDB connection and middleware configuration
-// Ensure you have installed the required packages: express, mongoose, dotenv, cors
-// == Server Setup with Express and MongoDB ==
-
+/**
+ * Main Server Application
+ * This is the entry point for the Express server application.
+ * It sets up the server, connects to MongoDB, and configures middleware and routes.
+ */
 
 // ===================================================
-// 1. IMPORT ALL DEPENDENCIES
+// 1. IMPORT DEPENDENCIES
 // ===================================================
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const errorHandler = require('./middleware/errorHandler');
+const authRoutes = require('./Routes/authRoutes');
 
 // ===================================================
-// 2. INITIALIZE & CONFIGURE
+// 2. LOAD ENVIRONMENT VARIABLES
 // ===================================================
-// Load environment variables from .env file
+/**
+ * dotenv loads environment variables from .env file
+ * Required variables:
+ * - PORT: Server port number
+ * - MONGO_URI: MongoDB connection string
+ * - JWT_SECRET: Secret key for JWT signing
+ */
 dotenv.config();
-// Create an Express application
+
+// ===================================================
+// 3. CREATE EXPRESS APPLICATION
+// ===================================================
 const app = express();
-// Set the port for the server
 const PORT = process.env.PORT || 5002;
 
 // ===================================================
-// 3. CONNECT TO DATABASE (will be moved later)
+// 4. CONFIGURE MIDDLEWARE
 // ===================================================
-// Note: In a real app (Day 4), this logic moves to a separate config/db.js file
+/**
+ * Middleware Configuration:
+ * - cors: Enables Cross-Origin Resource Sharing
+ * - express.json: Parses JSON request bodies
+ * - express.urlencoded: Parses URL-encoded bodies
+ */
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// ===================================================
+// 5. DATABASE CONNECTION
+// ===================================================
+/**
+ * MongoDB Connection
+ * Establishes connection to MongoDB using mongoose
+ * Exits process if connection fails
+ */
 mongoose.connect(process.env.MONGO_URI)
     .then(() => {
         console.log('Successfully connected to MongoDB');
     })
     .catch(err => {
         console.error('Error connecting to MongoDB:', err.message);
-        // Exit the process with failure code if we can't connect to the DB
         process.exit(1);
     });
 
 // ===================================================
-// 4. MIDDLEWARE
+// 6. CONFIGURE ROUTES
 // ===================================================
-// Enable CORS for all routes, allowing the React front-end to communicate with this server
-app.use(cors());
+/**
+ * API Routes:
+ * - /api/auth/*: Authentication routes (login, register, etc.)
+ * - /health: Server health check endpoint
+ * - /api: Basic API test endpoint
+ */
 
-// Enable Express to parse JSON data in the request body
-// This replaces the old bodyParser.json()
-app.use(express.json());
+// Mount authentication routes
+app.use('/api/auth', authRoutes);
 
-// Enable Express to parse URL-encoded data in the request body
-app.use(express.urlencoded({ extended: true }));
-
-// Example of serving static files (if you had a 'public' folder for images, etc.)
-// app.use(express.static('public')); // This is optional for now
-
-// ===================================================
-// 5. DEFINE ROUTES
-// =_=================================================
-// A simple test route to check if the server is running
+// Health check endpoint
 app.get('/health', (req, res) => {
     res.json({ status: 'ok', message: 'Server is healthy' });
 });
 
-// A simple test route to check if the server is running
+// Basic API test endpoint
 app.get('/api', (req, res) => {
-    // Send a JSON response
     res.json({ message: "Hello from the server! The API is running." });
 });
 
 // ===================================================
-// 6. START THE SERVER
+// 7. ERROR HANDLING
 // ===================================================
-// Error Handling
+/**
+ * Error Handling Middleware:
+ * 1. Catch 404 errors for undefined routes
+ * 2. Global error handler for all other errors
+ */
 app.use((req, res, next) => {
     const error = new Error('Not Found');
     error.status = 404;
@@ -81,6 +101,13 @@ app.use((req, res, next) => {
 
 app.use(errorHandler);
 
+// ===================================================
+// 8. START SERVER
+// ===================================================
+/**
+ * Server Startup
+ * Listens on specified port and logs startup information
+ */
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
     console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
